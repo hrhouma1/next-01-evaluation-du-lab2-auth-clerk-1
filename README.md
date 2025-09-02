@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Demo Authentification - Next.js + Clerk + ShadCN
 
-## Getting Started
+Une demonstration d'authentification avec sessions utilisateur individuelles utilisant Next.js, Clerk et ShadCN UI.
 
-First, run the development server:
+## Fonctionnalites
+
+- Authentification securisee avec Clerk
+- Sessions utilisateur isolees
+- Interface moderne avec ShadCN UI
+- Dashboard personnalise pour chaque utilisateur
+- Gestion de profil utilisateur
+- Routes protegees
+- Support du mode sombre
+
+## Configuration
+
+### 1. Installation des dependances
+
+```bash
+npm install
+```
+
+### 2. Configuration de Clerk
+
+1. Creez un compte sur [Clerk](https://clerk.com)
+2. Creez une nouvelle application
+3. Copiez le fichier `env.example` vers `.env.local`
+4. Remplacez les valeurs dans `.env.local` avec vos cles Clerk :
+
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_votre_cle_publique_ici
+CLERK_SECRET_KEY=sk_test_votre_cle_secrete_ici
+
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
+```
+
+### 3. Lancement de l'application
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+L'application sera disponible sur `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure du projet
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── dashboard/          # Dashboard utilisateur protege
+│   ├── profile/            # Page de profil utilisateur
+│   ├── sign-in/           # Page de connexion
+│   ├── sign-up/           # Page d'inscription
+│   ├── layout.tsx         # Layout principal avec ClerkProvider
+│   └── page.tsx           # Page d'accueil
+├── components/ui/         # Composants ShadCN UI
+├── lib/                   # Utilitaires
+└── middleware.ts          # Middleware de protection des routes
+```
 
-## Learn More
+## Test des sessions multiples
 
-To learn more about Next.js, take a look at the following resources:
+Pour tester que chaque utilisateur a sa propre session :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Session 1** : Connectez-vous avec un compte dans votre navigateur principal
+2. **Session 2** : Ouvrez un navigateur prive/incognito
+3. Creez un nouveau compte avec une adresse email differente
+4. Connectez-vous avec ce nouveau compte
+5. Comparez les dashboards - chaque utilisateur aura ses propres donnees
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Pages disponibles
 
-## Deploy on Vercel
+- `/` - Page d'accueil avec authentification
+- `/sign-in` - Page de connexion
+- `/sign-up` - Page d'inscription
+- `/dashboard` - Dashboard utilisateur (protege)
+- `/profile` - Profil utilisateur (protege)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Technologies utilisees
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Next.js 15** - Framework React
+- **TypeScript** - Typage statique
+- **Clerk** - Service d'authentification
+- **ShadCN UI** - Composants UI
+- **Tailwind CSS** - Framework CSS
+- **React** - Bibliotheque UI
+
+## Securite
+
+- Routes protegees par middleware
+- Sessions utilisateur isolees
+- Authentification securisee via Clerk
+- Verification automatique des tokens
+- Protection CSRF integree
+
+## Personnalisation
+
+L'application peut etre facilement personnalisee :
+
+- Modifiez les composants dans `src/components/ui/`
+- Ajustez le theme dans `src/app/globals.css`
+- Configurez l'apparence de Clerk dans les composants
+- Ajoutez de nouvelles routes protegees dans `src/middleware.ts`
